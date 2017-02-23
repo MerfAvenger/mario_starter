@@ -8,6 +8,8 @@ public class Player : MonoBehaviour {
 	public float speed = 6.0F;
 	public float jumpSpeed = 8.0F;
 	public float gravity = 20.0F;
+	private float jumpTimer = 0.0F; //For jumping's time related calculations
+	private bool canJump = true;
 	private Vector3 moveDirection = Vector3.zero;
 
 	public int Lives = 3; // number of lives the player hs
@@ -41,10 +43,23 @@ public class Player : MonoBehaviour {
 			moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
 			moveDirection = transform.TransformDirection(moveDirection);
 			moveDirection *= speed;
-
+			
+			canJump = true; //If the player is on the ground they can jump again.
 			// check to see if the player should jump
 			if (Input.GetButton("Jump"))
-				moveDirection.y = jumpSpeed;
+				
+				jumpTimer += Time.deltaTime;
+			
+				//Keep vertical speed constant until jump released or after .5 seconds
+					if (jumpTimer < 500.0F)
+					{
+						movementDirection.y += jumpSpeed;
+					}
+					else if(jumpTimer <= 500.0F)
+					{
+						jumpTimer = 0.0F;
+						canJump = false; //Resets jump timer and disables jumping until it the character has landed.
+					}
 		}
 
 		// apply gravity to movement direction
