@@ -46,7 +46,7 @@ public class Player : MonoBehaviour {
 			
 			canJump = true; //If the player is on the ground they can jump again.
 			// check to see if the player should jump
-			if (Input.GetButton("Jump"))
+			if (Input.GetButton("Jump") && canJump == true)
 				
 				jumpTimer += Time.deltaTime;
 			
